@@ -1,0 +1,89 @@
+from flask import Flask, jsonify
+from flask_cors import CORS
+import pymysql
+
+
+
+app = Flask(__name__)
+CORS(app)
+
+
+def create_connection():
+    return pymysql.connect(
+    host='localhost',
+    user='root',
+    password='admin',
+    database='voluntariat'
+    )
+
+def execute_query(query,params=None):
+    conn=create_connection()
+    cursor=conn.cursor()
+    if params:
+        cursor.execute(query, params)
+    else:
+        cursor.execute(query)
+    cursor.execute(query)
+    result=cursor.fetchall()
+    column_names = [desc[0] for desc in cursor.description]
+    result_dict_list = [dict(zip(column_names, list(row))) for row in result]
+    cursor.close()
+    conn.close()
+    return result_dict_list
+
+
+# @app.route('/get-all-info', methods=['GET'])
+# def get_info():
+#     query='SELECT (SELECT COUNT(*) FROM voluntari) AS numar_voluntari,(SELECT SUM(suma) FROM proiecte) AS suma_totala_proiecte,(SELECT COUNT(*) FROM proiecte) AS numar_proiecte;'
+#     result = execute_query(query)
+#     return jsonify(result)
+
+
+
+@app.route('/get-all-projects', methods=['GET'])
+def get_projects():
+    query='SELECT p.id_proiect, p.img, p.nume, p.status, date_format(p.data_sfarsit, "%d/%m/%y") as sfarsit, c.nume as categorie, o.nume as organizator, sum(f.suma) as suma, l.strada, orase.nume as oras, t.nume as tara FROM  proiecte p  LEFT JOIN categorii c ON c.id_categorie = p.id_categorie JOIN organizatori o ON o.id_organizator = p.id_organizator LEFT JOIN finantari f ON f.id_proiect = p.id_proiect left JOIN locatie l ON l.id_proiect = p.id_proiect LEFT JOIN orase ON orase.id_oras = l.id_oras LEFT JOIN tari t ON t.id_tara = l.id_tara GROUP BY  p.id_proiect, p.img, p.nume, p.status, sfarsit, categorie, organizator, strada, oras, tara order by id_proiect'
+    result = execute_query(query)
+    return jsonify(result)
+
+
+@app.route('/get-3-projects', methods=['GET'])
+def get_3projects():
+    query = 'SELECT  p.id_proiect, p.img, p.nume, p.status, date_format(p.data_sfarsit, "%d/%m/%y") as sfarsit, c.nume as categorie, o.nume as organizator, sum(f.suma) as suma, l.strada, orase.nume as oras, t.nume as tara FROM  proiecte p  LEFT JOIN categorii c ON c.id_categorie = p.id_categorie   JOIN organizatori o ON o.id_organizator = p.id_organizator  LEFT JOIN finantari f ON f.id_proiect = p.id_proiect   JOIN locatie l ON l.id_proiect = p.id_proiect LEFT JOIN orase ON orase.id_oras = l.id_oras LEFT JOIN tari t ON t.id_tara = l.id_tara GROUP BY  p.id_proiect, p.img, p.nume, p.status, sfarsit, categorie, organizator, strada, oras, tara  LIMIT 3;'
+    result = execute_query(query)
+    return jsonify(result)
+
+
+# @app.route('/get-project-info/<id>', methods=['GET'])
+# def get_project(id):
+#     query = 'SELECT p.id_proiect, p.img, p.nume, p.status, date_format(p.data_sfarsit, "%d/%m/%y") as sfarsit, c.nume as categorie, o.nume as organizator, sum(f.suma) as suma, l.strada, orase.nume as oras, t.nume as tara FROM  proiecte p  LEFT JOIN categorii c ON c.id_categorie = p.id_categorie JOIN organizatori o ON o.id_organizator = p.id_organizator LEFT JOIN finantari f ON f.id_proiect = p.id_proiect left JOIN locatie l ON l.id_proiect = p.id_proiect LEFT JOIN orase ON orase.id_oras = l.id_oras LEFT JOIN tari t ON t.id_tara = l.id_tara GROUP BY  p.id_proiect, p.img, p.nume, p.status, sfarsit, categorie, organizator, strada, oras, tara order by id_proiect where p.ID_proiect=%s'
+#     result = execute_query(query%id)
+#     return jsonify(result)
+
+@app.route('/get-project-info/<id>', methods=['GET'])
+def get_project(id):
+    query = 'SELECT p.id_proiect, p.img, p.nume, p.status, date_format(p.data_sfarsit, "%d/%m/%y") as sfarsit, c.nume as categorie, o.nume as organizator, sum(f.suma) as suma, l.strada, orase.nume as oras, t.nume as tara FROM  proiecte p  LEFT JOIN categorii c ON c.id_categorie = p.id_categorie JOIN organizatori o ON o.id_organizator = p.id_organizator LEFT JOIN finantari f ON f.id_proiect = p.id_proiect left JOIN locatie l ON l.id_proiect = p.id_proiect LEFT JOIN orase ON orase.id_oras = l.id_oras LEFT JOIN tari t ON t.id_tara = l.id_tara WHERE p.ID_proiect=%d GROUP BY  p.id_proiect, p.img, p.nume, p.status, sfarsit, categorie, organizator, strada, oras, tara ORDER BY id_proiect'
+    result = execute_query(query, (int(id),))
+    return jsonify(result)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
+
+
+
+
+
+
+
+
+
+
+@app.route('/get-project-info/<id>', methods=['GET'])
+def get_project(id):
+    query = 'SELECT * FROM proiecte where ID_proiect=%s'
+    result = execute_query(query%id)
+    return jsonify(result)
+
