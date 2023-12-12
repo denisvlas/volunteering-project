@@ -10,6 +10,7 @@ export interface Projects{
     sfarsit: string
     status: string
     suma: number
+    
 }
 
 

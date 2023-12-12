@@ -8,8 +8,7 @@ import { Necesitati } from "../pages/evenimente/models";
 import { project } from "../styles/ProjecstList.module.css";
 
 function NecesitatiSection() {
-  const { p, setShowMenu, showMenu, section } = useContext(SectionContext);
-  const { id } = useParams();
+  const { id,p, setShowMenu, showMenu, section } = useContext(SectionContext);
   const [necesitati, setNecesitati] = useState<Necesitati[]>([]);
   const [loading,setLoading]=useState(true)
 

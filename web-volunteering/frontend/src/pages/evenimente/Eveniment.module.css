@@ -212,8 +212,25 @@ i{
   padding-left: 20px;
 }
 
+.transactions .my-table td{
+  padding: 0 50px;
+  text-align: center;
+  height: 40px;
+  font-size: 22px;
+}
+
+.transactions-header {
+  border: 1px solid #ddd;
+  height: 40px;
+  font-size: 25px;
+}
 
 
+
+.transactions .my-table{
+  overflow: auto;
+
+}
 /* Stiluri pentru rândurile alternative */
 .my-table tr:nth-child(even) {
   background-color: #f9f9f9;
@@ -228,11 +245,65 @@ i{
 
 }
 
+
+
 .cantitate-span{
   margin-left: 6%;
 }
 
 .chart{
-  width: 100%;
-  height: 100%;
+  position: relative;
+  top: 50px;
+  margin: 0 auto;
+  margin-bottom: 80px;
+
+}
+
+.history-icon{
+  font-size: 35px;
+  /* position: relative;
+  left: calc(100% - 60px);
+  top:90px; */
+}
+
+.transactions{
+
+  height: 290px;
+  width: 95%;
+  margin: 0 auto;
+  overflow: auto;
+}
+
+.section-st{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+  height: 920px;
+  box-shadow: 1px 1px 24px 1px rgba(0,0,0,0.29);
+    -webkit-box-shadow: 1px 1px 24px 1px rgba(0,0,0,0.29);
+    -moz-box-shadow: 1px 1px 24px 1px rgba(0,0,0,0.29);
+}
+
+
+.suma{
+  color: #49ca35;
+}
+
+
+.transactions-btn-div{
+  display: flex;
+  margin: 0 25px;
+  margin-bottom: 30px;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+}
+
+.sponsorizeaza{
+  height: 40px;
+  padding: 8px;
+  font-size: 20px;
+  border: none;
+  background: #25de3e;
 }

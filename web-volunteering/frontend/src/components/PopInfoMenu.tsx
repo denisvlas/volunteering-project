@@ -6,7 +6,7 @@ import { SectionContext } from '../pages/evenimente/context';
 
 function PopInfoMenu() {
     const { section, setSection,showMenu,setShowMenu } = useContext(SectionContext);
-    const meniu = [menu.InformatiiGenerale, menu.Necesitati, menu.Statistica];
+    const meniu = [menu.InformatiiGenerale, menu.Necesitati, menu.Finantari];
 
     return (
         <div className={s['pop-info-menu']}onMouseLeave={() => setShowMenu(false)}>

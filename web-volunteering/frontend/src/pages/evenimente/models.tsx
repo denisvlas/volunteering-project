@@ -17,12 +17,19 @@ export interface Projects{
 export enum menu{
     InformatiiGenerale='Informatii generale',
     Necesitati='Necesitati',
-    Statistica='Statistica'
+    Finantari='Finantari'
 }
 
-export type menuType=menu.InformatiiGenerale|menu.Necesitati|menu.Statistica
+export type menuType=menu.InformatiiGenerale|menu.Necesitati|menu.Finantari
 
 export interface Necesitati{
     cantitate:string;
     necesitate:string
+}
+
+export interface Transactions{
+    organizatie:string;
+    data:string
+    suma:string
+
 }
