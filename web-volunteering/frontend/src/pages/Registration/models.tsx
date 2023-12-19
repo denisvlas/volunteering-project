@@ -10,7 +10,12 @@
     sponsori='sponsori',
 }
 
+export enum statuses{
+    activ="Activ",
+    finalizat="Finalizat",
+    pauza="Pauza",
 
+}
 export interface User{
     functie:string,
     nume:string

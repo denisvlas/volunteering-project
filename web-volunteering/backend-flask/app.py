@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import pymysql
+from flask import g
 
 app = Flask(__name__)
 CORS(app)
@@ -183,7 +184,7 @@ def get_3projects():
 
 @app.route('/get-project-info/<id>', methods=['GET'])
 def get_project(id):
-    query = f'SELECT p.id_proiect, p.img,p.descriere, p.nume, p.status, date_format(p.data_sfarsit, "%d/%m/%y") as sfarsit,date_format(p.data_inceput,"%d/%m/%y")as inceput, c.nume as categorie, o.nume as organizator, sum(f.suma) as suma, l.strada, orase.nume as oras, t.nume as tara FROM  proiecte p  LEFT JOIN categorii c ON c.id_categorie = p.id_categorie JOIN organizatori o ON o.id_organizator = p.id_organizator LEFT JOIN finantari f ON f.id_proiect = p.id_proiect left JOIN locatie l ON l.id_locatie = p.id_locatie LEFT JOIN orase ON orase.id_oras = l.id_oras LEFT JOIN tari t ON t.id_tara = l.id_tara where p.ID_proiect={id} GROUP BY  p.id_proiect, p.img, p.nume, p.status,inceput, sfarsit, categorie, organizator, strada, oras, tara order by id_proiect'
+    query = f'SELECT p.id_proiect, p.img,p.descriere, p.nume, p.status, date_format(p.data_sfarsit, "%d-%m-%Y") as sfarsit,date_format(p.data_inceput,"%d-%m-%Y")as inceput, c.nume as categorie, o.nume as organizator, sum(f.suma) as suma, l.strada, orase.nume as oras, t.nume as tara FROM  proiecte p  LEFT JOIN categorii c ON c.id_categorie = p.id_categorie JOIN organizatori o ON o.id_organizator = p.id_organizator LEFT JOIN finantari f ON f.id_proiect = p.id_proiect left JOIN locatie l ON l.id_locatie = p.id_locatie LEFT JOIN orase ON orase.id_oras = l.id_oras LEFT JOIN tari t ON t.id_tara = l.id_tara where p.ID_proiect={id} GROUP BY  p.id_proiect, p.img, p.nume, p.status,inceput, sfarsit, categorie, organizator, strada, oras, tara order by id_proiect'
     result = execute_query(query)
     return jsonify(result)
 
@@ -354,6 +355,67 @@ def execquer(query, params=None):
 
     return result
 
+
+
+@app.route('/updateProject/<int:id>', methods=['POST'])
+def update_project(id):
+    try:
+        # Get data from the request
+        data = request.json
+        inceput = data.get('inceput', '')
+        sfarsit = data.get('sfarsit', '')
+        strada = data.get('strada', '')
+        oras = data.get('oras', '')
+        tara = data.get('tara', '')
+        categorie = data.get('categorie', '')
+        descriere = data.get('descriere', '')
+        nume = data.get('nume', '')
+        status = data.get('status', '')
+
+        # Start a transaction
+        g.db = create_connection()
+        cursor = g.db.cursor()
+
+        # Update location information
+        query_locatie = """
+            UPDATE locatie
+            SET ID_oras = (SELECT id_oras FROM orase WHERE nume=%s),
+                ID_tara = (SELECT id_tara FROM tari WHERE nume=%s),
+                strada = %s
+            WHERE id_locatie = (SELECT ID_locatie FROM proiecte WHERE ID_proiect = %s)
+        """
+        params_locatie = (oras, tara, strada, id)
+        cursor.execute(query_locatie, params_locatie)
+
+        # Update project information
+        query_proiect = """
+            UPDATE proiecte
+            SET data_inceput = %s,
+                data_sfarsit = %s,
+                id_categorie = (SELECT id_categorie FROM categorii WHERE nume=%s),
+                descriere = %s,
+                status = %s,
+                nume = %s
+            WHERE id_proiect = %s
+        """
+        params_proiect = (inceput, sfarsit, categorie, descriere, status, nume, id)
+        cursor.execute(query_proiect, params_proiect)
+
+        # Commit the transaction
+        g.db.commit()
+
+        # Return a success message
+        return jsonify({"message": "Proiectul a fost actualizat cu succes"})
+
+    except Exception as e:
+        # Rollback in case of an error
+        g.db.rollback()
+        return jsonify({"error": str(e)})
+
+    finally:
+        # Close the database connection
+        if g.db:
+            g.db.close()
 
 if __name__ == "__main__":
     app.run(debug=True)

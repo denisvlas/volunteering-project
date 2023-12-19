@@ -7,20 +7,12 @@ import { functiiTypeBD } from '../pages/Registration/models';
 import axios from 'axios';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'; // Import the styles
+import { parse, format } from 'date-fns';
 
 function InfoSection() {
-  const { p, setShowMenu, showMenu, section } = useContext(SectionContext);
+  const { handleSaveChanges,p, setShowMenu, showMenu, section,setEditedValues,editedValues,setEditToggle,editToggle,handleInputChange } = useContext(SectionContext);
   const { userInfo } = useContext(Context);
-  const [editToggle, setEditToggle] = useState(false);
-  const [editedValues, setEditedValues] = useState({
-    inceput: p?.inceput || new Date(), // Folosim new Date() ca valoare implicită
-    sfarsit: p?.sfarsit || new Date(), // Folosim new Date() ca valoare implicită
-    strada: p?.strada || '',
-    oras: p?.oras || '',
-    tara: p?.tara || '',
-    categorie: p?.categorie || 'Asistență medicală',
-    descriere: p?.descriere || '',
-  });
+ 
 
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
@@ -51,23 +43,16 @@ function InfoSection() {
   };
 
   const handleCountryChange = (selectedCountry: string) => {
-    // Apelul către backend pentru a obține lista de orașe pentru țara selectată
     getCitiesByCountry(selectedCountry);
     handleInputChange('tara', selectedCountry); // Actualizează starea pentru țară
   };
 
-  const handleInputChange = (field: string, value: string) => {
-    setEditedValues((prevValues) => ({
-      ...prevValues,
-      [field]: value,
-    }));
-  };
+  
 
-  const handleSaveChanges = () => {
-    
-    setEditToggle(false);
-    console.log(editedValues);
-  };
+  // const handleSaveChanges = () => {
+  //   setEditToggle(false);
+  //   console.log(editedValues);
+  // };
 
   const handleDateChange = (field: string, date: Date | null) => {
     if (date) {
@@ -77,8 +62,9 @@ function InfoSection() {
       }));
     }
   };
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setENDDate] = useState(new Date());
+
+  const formatDate = (date: Date) => format(date, 'dd-MM-yyyy');
+
   return (
     <>
       {!p ? (
@@ -110,36 +96,30 @@ function InfoSection() {
                   <div className={c.edit}>
                     <div className={c.flex}>
                       <label className={c['loc-labels']} htmlFor="inceput">
-                      Inceput
-                    </label>
-                    <ReactDatePicker
+                        Inceput
+                      </label>
+                      <ReactDatePicker
                         className={c.date}
-                        selected={startDate}
-                        onChange={(date: Date) => {
-                          setStartDate(date);
-                          handleDateChange('inceput', date);
-                        }}
-                        dateFormat="dd/MM/yyyy"
+                        selected={editedValues.inceput}
+                        onChange={(date: Date) => handleDateChange('inceput', date)}
+                        dateFormat="dd-MM-yyyy"
                       />
                     </div>
-                    
+
                     <div className={c.flex}>
-                    <label className={c['loc-labels']} htmlFor="Sfarsit">
-                      Sfarsit
-                    </label>
-                    <ReactDatePicker
+                      <label className={c['loc-labels']} htmlFor="sfarsit">
+                        Sfarsit
+                      </label>
+                      <ReactDatePicker
                         className={c.date}
-                        selected={endDate}
-                        onChange={(date: Date) => {
-                          setENDDate(date);
-                          handleDateChange('sfarsit', date);
-                        }}
-                        dateFormat="dd/MM/yyyy"
+                        selected={editedValues.sfarsit}
+                        onChange={(date: Date) => handleDateChange('sfarsit', date)}
+                        dateFormat="dd-MM-yyyy"
                       />
                     </div>
 
                     <div className={c['edit-loc']}>
-                    <div>
+                      <div>
                         <label className={c['loc-labels']} htmlFor="tara">
                           Tara
                         </label>
@@ -158,14 +138,13 @@ function InfoSection() {
                           ))}
                         </select>
                       </div>
-                     
 
                       <div>
                         <label className={c['loc-labels']} htmlFor="oras">
                           Oras
                         </label>
-                        {cities&&(
-                            <select
+                        {cities && (
+                          <select
                             name="oras"
                             value={editedValues.oras}
                             onChange={(e) => handleInputChange('oras', e.target.value)}
@@ -180,7 +159,6 @@ function InfoSection() {
                             ))}
                           </select>
                         )}
-                      
                       </div>
                       <div>
                         <label className={c['loc-labels']} htmlFor="strada">
@@ -193,34 +171,33 @@ function InfoSection() {
                           onChange={(e) => handleInputChange('strada', e.target.value)}
                         />
                       </div>
-                      
                     </div>
-                    <div  className={c.flex}>
-                    <label className={c['loc-labels']} htmlFor="categorii">
-                      Categorie
-                    </label>
-                    <select
-                      name="categorii"
-                      className={c.categorii}
-                      value={editedValues.categorie}
-                      onChange={(e) => handleInputChange('categorie', e.target.value)}
-                    >
-                      <option value="Asistență medicală">Asistență medicală</option>
-                      <option value="Social">Social</option>
-                      <option value="Mediu">Mediu</option>
-                      <option value="Educatie">Educație</option>
-                    </select>
+                    <div className={c.flex}>
+                      <label className={c['loc-labels']} htmlFor="categorii">
+                        Categorie
+                      </label>
+                      <select
+                        name="categorii"
+                        className={c.categorii}
+                        value={editedValues.categorie}
+                        onChange={(e) => handleInputChange('categorie', e.target.value)}
+                      >
+                        <option value="Asistență medicală">Asistență medicală</option>
+                        <option value="Social">Social</option>
+                        <option value="Mediu">Mediu</option>
+                        <option value="Educatie">Educație</option>
+                      </select>
                     </div>
                   </div>
                 ) : (
                   <>
                     <span>{p.organizator}</span>
-                    <span>{p.inceput}</span>
-                    <span>{p.sfarsit}</span>
+                    <span>{formatDate(editedValues.inceput)}</span>
+                    <span>{formatDate(editedValues.sfarsit)}</span>
                     <span>
-                      str.{p.strada}, {p.oras}, {p.tara}
+                      str.{editedValues.strada}, {editedValues.oras}, {editedValues.tara}
                     </span>
-                    <span>{p.categorie}</span>
+                    <span>{editedValues.categorie}</span>
                     <span>{p.suma}MDL</span>
                   </>
                 )}

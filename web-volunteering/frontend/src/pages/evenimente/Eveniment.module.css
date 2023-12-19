@@ -167,7 +167,7 @@ i {
   display: flex;
   flex-direction: column;
 }
-.col2 input,select{
+.col2 input,select,.p-info input{
   border:1px solid #dedede;
   font-size: 20px;
   
@@ -374,6 +374,17 @@ i {
   right: 5px;
   font-size: 30px;
 
+}
+
+.error{
+  position: absolute;
+  top: 10px;
+  color: red;
+}
+
+.error-input{
+  margin-top: 15px;
+  border: 1px red solid;
 }
 
 

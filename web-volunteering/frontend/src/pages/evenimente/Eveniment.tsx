@@ -13,6 +13,8 @@ import NecesitatiSection from "../../components/NecesitatiSection";
 import StatisticaSection from "../../components/StatisticaSection";
 import HistoryTransactions from "../../components/HistoryTransactions";
 import { Context } from "../../context";
+import { parse, format } from 'date-fns';
+import { statuses } from "../Registration/models";
 
 function Eveniment() {
   const { id } = useParams();
@@ -48,13 +50,78 @@ function Eveniment() {
       setUserInfo(storedUserInfo);
     }
   }, []);
-
+  
   const [showMenu,setShowMenu]=useState(false)
   const [section,setSection]=useState<menuType>(menu.InformatiiGenerale)
   const[showTr,setShowTr]=useState(false);
- 
+  const [editToggle, setEditToggle] = useState(false);
+
+  const handleInputChange = (field: string, value: string) => {
+    setEditedValues((prevValues) => ({
+      ...prevValues,
+      [field]: value,
+    }));
+  };
+
+  const [editedValues, setEditedValues] = useState({
+    inceput: p ? parse(p.inceput, 'dd-MM-yyyy', new Date()) : new Date(),
+    sfarsit: p ? parse(p.sfarsit, 'dd-MM-yyyy', new Date()) : new Date(),
+    strada: p?.strada || '',
+    oras: p?.oras || '',
+    tara: p?.tara || '',
+    categorie: p?.categorie || 'Asistență medicală',
+    descriere: p?.descriere || '',
+    nume: p?.nume || '',
+    status: p?.status || '',
+  });
+useEffect(()=>{
+setEditedValues({
+  inceput: p ? parse(p.inceput, 'dd-MM-yyyy', new Date()) : new Date(),
+  sfarsit: p ? parse(p.sfarsit, 'dd-MM-yyyy', new Date()) : new Date(),
+  strada: p?.strada || '',
+  oras: p?.oras || '',
+  tara: p?.tara || '',
+  categorie: p?.categorie || 'Asistență medicală',
+  descriere: p?.descriere || '',
+  nume: p?.nume || '',
+  status: p?.status || '',
+})
+},[p])
+
+const [error,setError]=useState<null|string>(null)
+
+async function updateProject(values:any) {
+  try{
+      const res=await axios.post(`http://localhost:5000/updateProject/${id}`,values)
+      if(res.data.message){
+        setError(null)
+      }else{
+        setError('Acest nume este ocupat')
+        setEditToggle(true)
+      }
+      
+      console.log(res.data);
+      
+      
+  }catch(e){
+    console.log(e);
+    
+  }
+}
+
+const handleSaveChanges = () => {
+  setEditToggle(false);
+
+  const formattedValues = {
+    ...editedValues,
+    inceput: format(editedValues.inceput, 'yyyy-MM-dd'),
+    sfarsit: format(editedValues.sfarsit, 'yyyy-MM-dd'),
+  };
+
+  updateProject(formattedValues);
+}
   return (
-    <SectionContext.Provider value={{showTr,setShowTr,id,section, setSection,setShowMenu,showMenu,setProject,p }}>
+    <SectionContext.Provider value={{handleSaveChanges,handleInputChange,setEditToggle,editToggle,editedValues,setEditedValues,showTr,setShowTr,id,section, setSection,setShowMenu,showMenu,setProject,p }}>
     <div className={x.container}>
       {!p? (
         <div className={c.lodaing}>
@@ -68,8 +135,35 @@ function Eveniment() {
               <div className={s["img-div"]}>
                   <img className={s["img-ev"]} src={p.img} alt="" />
               </div>
+              {
+                editToggle? 
+                <div className={c["p-info"]}>
+                  {error&&<span className={c.error}>{error}</span>}
+                <input  onChange={(e) => handleInputChange('nume', e.target.value)} value={editedValues.nume} className={`${s.nume} ${s.nume && error ? c["error-input"] : ''}`}/>
+                  <div className={s["p-header"]}>
+                    <span className={s.categorie}>{p.categorie}</span>
+                    <span className={s.categorie}>{p.oras}</span>
+                  </div>
+                
+                  <hr/>
+                  <span >Suma: {p.suma}MDL</span>
+                  <div >
+                  <label htmlFor="status">Status: </label>
+                  <select
+                        name="status"
+                        className={c.categorii}
+                        value={editedValues.status}
+                        onChange={(e) => handleInputChange('status', e.target.value)}
+                      >
+                        <option value="Activ">Activ </option>
+                        <option value="Finalizat">Finalizat</option>
+                        <option value="Pauza">Pauza</option>
+      </select>
+    </div>
+                  <hr />
+              </div>:
               <div className={c["p-info"]}>
-                <span className={s.nume}>{p.nume}</span>
+                <span className={s.nume}>{editedValues.nume}</span>
                 <div className={s["p-header"]}>
                   <span className={s.categorie}>{p.categorie}</span>
                   <span className={s.categorie}>{p.oras}</span>
@@ -77,9 +171,13 @@ function Eveniment() {
               
                 <hr/>
                 <span >Suma: {p.suma}MDL</span>
-                <span>Status: {p.status}</span>
+                <span>Status: {editedValues.status}</span>
                 <hr />
               </div>
+              }
+             
+
+              
           </div>
           {section===menu.InformatiiGenerale&&<InfoSection/>}
           {section===menu.Necesitati&&<NecesitatiSection />}
