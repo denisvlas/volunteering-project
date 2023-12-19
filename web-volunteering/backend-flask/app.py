@@ -11,7 +11,7 @@ def create_connection():
         host='localhost',
         user='root',
         password='admin',
-        database='voluntariat'
+        database='voluntariat(1)'
     )
 
 
@@ -79,7 +79,7 @@ def register_volunteer():
         return jsonify({"message": "Volunteer registered successfully"})
 
     except Exception as e:
-        # Handle any exceptions, log the error, and return an error message if necessary
+        # Handle any exceptions, log the error, and return an error message if necessaryn
         return jsonify({"error": str(e)})
 
 @app.route('/login', methods=['POST'])
@@ -154,7 +154,7 @@ def get_info():
 
 @app.route('/get-money/<id>', methods=['GET'])
 def get_money(id):
-    query = f'select data,suma from finantari where ID_proiect={id} order by data '
+    query = f'SELECT data, SUM(suma) as suma FROM finantari WHERE ID_proiect = {id} GROUP BY data ORDER BY data;'
     result = execute_query(query)
     return jsonify(result)
 
@@ -162,6 +162,14 @@ def get_money(id):
 @app.route('/get-all-projects', methods=['GET'])
 def get_projects():
     query = 'SELECT p.id_proiect, p.img, p.nume, p.status, date_format(p.data_sfarsit, "%d/%m/%y") as sfarsit, c.nume as categorie, o.nume as organizator, sum(f.suma) as suma, l.strada, orase.nume as oras, t.nume as tara FROM  proiecte p  LEFT JOIN categorii c ON c.id_categorie = p.id_categorie JOIN organizatori o ON o.id_organizator = p.id_organizator LEFT JOIN finantari f ON f.id_proiect = p.id_proiect left JOIN locatie l ON l.id_locatie = p.id_locatie LEFT JOIN orase ON orase.id_oras = l.id_oras LEFT JOIN tari t ON t.id_tara = l.id_tara GROUP BY  p.id_proiect, p.img, p.nume, p.status, sfarsit, categorie, organizator, strada, oras, tara order by id_proiect'
+    result = execute_query(query)
+    return jsonify(result)
+
+@app.route('/get-org-projects', methods=['POST'])
+def get_org_projects():
+    data = request.get_json() 
+    id = data.get('id', '')
+    query = f'SELECT p.id_proiect, p.img, p.nume, p.status, date_format(p.data_sfarsit, "%d/%m/%y") as sfarsit, c.nume as categorie, o.nume as organizator, sum(f.suma) as suma, l.strada, orase.nume as oras, t.nume as tara FROM  proiecte p  LEFT JOIN categorii c ON c.id_categorie = p.id_categorie JOIN organizatori o ON o.id_organizator = p.id_organizator LEFT JOIN finantari f ON f.id_proiect = p.id_proiect left JOIN locatie l ON l.id_locatie = p.id_locatie LEFT JOIN orase ON orase.id_oras = l.id_oras LEFT JOIN tari t ON t.id_tara = l.id_tara where o.id_organizator={id} GROUP BY  p.id_proiect, p.img, p.nume, p.status, sfarsit, categorie, organizator, strada, oras, tara order by id_proiect '
     result = execute_query(query)
     return jsonify(result)
 
@@ -181,7 +189,7 @@ def get_project(id):
 
 @app.route('/get-project-transactions/<id>', methods=['GET'])
 def get_project_transactions(id):
-    query = f'select s.nume_organizatie as organizatie,sum(f.suma) as suma, date_format(f.data, "%d/%m/%y")as data from sponsori s join finantari f on f.ID_sponsor=s.id_sponsor where f.id_proiect={id} group by s.nume_organizatie,f.data'
+    query = f'select s.nume_organizatie as organizatie,sum(f.suma) as suma, date_format(f.data, "%d/%m/%y")as data from sponsori s join finantari f on f.ID_sponsor=s.id_sponsor where f.id_proiect={id} group by s.nume_organizatie,f.data order by f.data desc'
     result = execute_query(query)
     return jsonify(result)
 
@@ -191,6 +199,160 @@ def get_necesitati(id):
     query = f'select n.necesitate as necesitate, cantitate  from necesitati n where n.id_proiect={id}'
     result = execute_query(query)
     return jsonify(result)
+
+
+
+@app.route('/user-info', methods=['POST'])
+def get_profile():
+    data = request.get_json() 
+    email = data.get('email', '')
+    functie = data.get('functie', '')
+    
+    if functie=='organizatori':
+        print(functie)
+        query = f'SELECT  organizatori.id_organizator as id,organizatori.nume, organizatori.prenume, organizatori.telefon, organizatori.likeuri, organizatori.email, (SELECT COUNT(*) FROM proiecte WHERE proiecte.id_organizator = organizatori.id_organizator) as numar_proiecte FROM organizatori WHERE organizatori.email ="{email}"'
+        result = execute_query(query)
+        return jsonify(result)
+    if(functie=='sponsori'):
+        query = f'SELECT  sponsori.id_sponsor AS id, sponsori.nume_organizatie AS nume, sponsori.likeuri, sponsori.email, COUNT(DISTINCT finantari.id_proiect) AS numar_proiecte, sum(finantari.suma) as suma_donata FROM sponsori LEFT JOIN finantari ON sponsori.id_sponsor = finantari.id_sponsor WHERE sponsori.email ="{email}" GROUP BY sponsori.id_sponsor , sponsori.nume_organizatie , sponsori.likeuri , sponsori.email;'
+        result = execute_query(query)
+        return jsonify(result)
+    return jsonify({'nu sa gasit nimic':''})
+
+    
+
+    # If none of the conditions are met, return a default response
+    # return jsonify({"error": "Invalid function type or email"})
+
+
+
+@app.route('/get-all-countries', methods=['GET'])
+def get_all_countries():
+    query = 'SELECT DISTINCT nume FROM tari'
+    result = execute_query(query)
+    return jsonify(result)
+
+
+@app.route('/get-cities-by-country', methods=['POST'])
+def get_cities_by_country():
+    data = request.json
+    country_name = data.get('country_name', '')
+    
+    query = f'SELECT o.nume FROM orase o JOIN tari t ON o.id_Tara = t.ID_tara WHERE t.nume = "{country_name}"'
+    result = execute_query(query)
+    return jsonify(result)
+
+
+
+@app.route('/update-proiect/<int:id>', methods=['PUT'])
+def update_proiect(id):
+    try:
+        # Get data from the request
+        data = request.json
+        inceput = data['inceput']
+        sfarsit = data['sfarsit']
+        strada = data['strada']
+        oras = data['oras']
+        tara = data['tara']
+        categorie = data['categorie']
+        descriere = data['descriere']
+
+        # Update the event in the database using parameterized query
+        query = """
+        UPDATE proiecte
+        SET inceput = %s, sfarsit = %s, strada = %s, oras = %s, tara = %s, categorie = %s, descriere = %s
+        WHERE id = %s
+        """
+        params = (inceput, sfarsit, strada, oras, tara, categorie, descriere, id)
+        execute_reg_query(query, params)
+
+        # Return a success message
+        return jsonify({"message": "Event updated successfully"})
+
+    except Exception as e:
+        # Handle any exceptions, log the error, and return an error message if necessary
+        return jsonify({"error": str(e)})
+
+
+@app.route('/sponsor-info', methods=['POST'])
+def get_sponsor_id():
+    data = request.get_json() 
+    email = data.get('email', '')
+    query = f'SELECT  sponsori.id_sponsor as id FROM sponsori where email ="{email}"'
+    result = execute_query(query)
+    return jsonify(result)
+
+# @app.route('/sponsorizare', methods=['POST'])
+# def sponsorizeaza():
+#     try:
+#         data = request.get_json() 
+#         id_proiect = data.get('id_proiect', '')
+#         id_sponsor = data.get('id_sponsor', '')
+#         suma = data.get('suma', '')
+        
+#         query = f'INSERT INTO finantari (id_proiect, id_sponsor, suma, data) values ({id_proiect}, {id_sponsor}, {suma}, current_Date())'
+#         result = execute_query(query)
+        
+#         if result is not None:
+#             return jsonify({'success': True})
+#         else:
+#             return jsonify({'error': 'Failed to insert data into the database'})
+    
+#     except Exception as e:
+#         return jsonify({'error': str(e)})
+
+
+from datetime import date
+
+@app.route('/sponsorizare', methods=['POST'])
+def sponsorizeaza():
+    try:
+        data = request.json
+        id_proiect = int(data.get('id_proiect', -1))
+        id_sponsor = int(data.get('id_sponsor', -1))
+        suma = int(data.get('suma', -1))
+
+        if id_proiect == -1 or id_sponsor == -1 or suma == -1:
+            raise ValueError("Invalid or missing input data")
+
+        query = 'INSERT INTO finantari (id_proiect, id_sponsor, suma, data) VALUES (%s, %s, %s, %s)'
+        current_date = date.today().isoformat()
+        params = (id_proiect, id_sponsor, suma, current_date)
+
+        result = execute_reg_query(query, params)
+
+        if result is not None:
+            print(f'Database insertion result: {result}')
+            return jsonify({'success': True})
+        else:
+            raise ValueError('Failed to insert data into the database')
+
+    except Exception as e:
+        print(f'Error during processing: {e}')
+        return jsonify({"error": str(e)})
+
+
+def execquer(query, params=None):
+    connection = None
+    result = None
+
+    try:
+        connection = create_connection()  # înlocuiește cu funcția ta de conectare la baza de date
+        with connection.cursor() as cursor:
+            if params:
+                cursor.execute(query, params)
+            else:
+                cursor.execute(query)
+            result = cursor.fetchall()
+
+    except Exception as e:
+        print(f"Error executing query: {str(e)}")
+
+    finally:
+        if connection:
+            connection.close()
+
+    return result
 
 
 if __name__ == "__main__":

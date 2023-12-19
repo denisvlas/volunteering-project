@@ -1,0 +1,114 @@
+
+.container{
+    width: 85%;
+    padding: 50px 0;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.div{
+  width: 300px;
+  padding: 0 20px;
+  gap: 20px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 1px 1px 24px 1px rgba(0, 0, 0, 0.29);
+    -webkit-box-shadow: 1px 1px 24px 1px rgba(0, 0, 0, 0.29);
+    -moz-box-shadow: 1px 1px 24px 1px rgba(0, 0, 0, 0.29);
+    
+  }
+.lodaing{
+    height: 50vh;
+    gap: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    margin: 0 auto
+
+}
+.no-projects{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 30px;
+  font-size: 40px;
+  
+  }
+  
+@keyframes loadingAnimation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .loading-spinner {
+    border: 10px solid #8a8787;
+    border-top: 10px solid #3498db;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    animation: loadingAnimation 1s linear infinite;
+  }
+  .eveniment{
+    display: flex;
+    gap: 10px;
+    }
+
+    .categorie{
+        font-size: 18px;
+        color: rgb(96, 94, 94);
+    }
+    
+    .nume{
+        font-weight: 700;
+        font-size: 30px;
+    }
+
+ 
+
+
+.user-info-section{
+    display: flex;
+    justify-content: flex-start;
+    gap:2%;
+    margin: 0 auto;
+    
+}
+.projects-section{
+    padding: 0 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap:2%;
+    margin: 0 auto;
+    gap: 20px;
+    width: 80%;
+    box-shadow: 1px 1px 24px 1px rgba(0, 0, 0, 0.29);
+    -webkit-box-shadow: 1px 1px 24px 1px rgba(0, 0, 0, 0.29);
+    -moz-box-shadow: 1px 1px 24px 1px rgba(0, 0, 0, 0.29);
+    
+    
+}
+
+.user-info-section .nume,.projects-section .nume{
+
+    text-align: center;
+    margin: 20px 0;
+    font-size: 26px;
+}
+
+.wrapper{
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+

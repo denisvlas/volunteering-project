@@ -8,26 +8,39 @@ import { Context } from "../../context";
 import { app } from "../../styles/App.module.css";
 import axios from "axios";
 import { User } from "../Registration/models";
+import { MainContext } from "./context";
 
 function Main() {
-  const{userState,userInfo,setUserInfo}=useContext(Context)
+  const { userState, userInfo, setUserInfo, projects, setProjects } = useContext(Context);
 
-  useEffect(() => {
-    userState.logged&&
-    localStorage.setItem('userInfo', JSON.stringify(userState));
-  }, []);
+async function getProjects() {
+  try {
+    const res = await axios.get("http://127.0.0.1:5000/get-3-projects");
+    setProjects(res.data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+console.log(userInfo);
 
-  useEffect(() => {
-    // Recuperare date din localStorage la încărcarea componentei
-    const storedUserInfoString = localStorage.getItem('userInfo');
+useEffect(() => {
+  const storedUserInfoString = localStorage.getItem('userInfo');
 
-    if (storedUserInfoString !== null) {
-      const storedUserInfo = JSON.parse(storedUserInfoString);
-      setUserInfo(storedUserInfo);
-    }
-  }, []);
+  if (storedUserInfoString !== null) {
+    const storedUserInfo = JSON.parse(storedUserInfoString);
+    setUserInfo((prevUserInfo) => {
+     
+      return { ...prevUserInfo, ...storedUserInfo };
+    });
+  }
+}, []); 
+useEffect(() => {
+  getProjects();
+}, []);
+
+
+
   return (
-    
     <div className={app}>
       <div className={s.container}>
         <div className={s.section}>

@@ -9,4 +9,6 @@ export const Context = createContext<{
   setUserState: React.Dispatch<React.SetStateAction<User>>
   userInfo: User 
   setUserInfo: React.Dispatch<React.SetStateAction<User>>
-}>({ projects: [], setProjects: () => {},userState:{functie: "",nume: "",prenume: "",email: "",telefon: "",numeOrganizatie: "",cont: "",password:'',logged:false},setUserState:()=>{},userInfo:{functie: "",nume: "",prenume: "",email: "",telefon: "",numeOrganizatie: "",cont: "",password:'',logged:false},setUserInfo:()=>{} });
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  loading:boolean
+}>({ loading:true,setLoading:()=>{},projects: [], setProjects: () => {},userState:{functie: "",nume: "",prenume: "",email: "",telefon: "",numeOrganizatie: "",cont: "",password:'',logged:false},setUserState:()=>{},userInfo:{functie: "",nume: "",prenume: "",email: "",telefon: "",numeOrganizatie: "",cont: "",password:'',logged:false},setUserInfo:()=>{} });

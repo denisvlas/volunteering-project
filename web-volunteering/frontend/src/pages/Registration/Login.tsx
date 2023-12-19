@@ -59,7 +59,13 @@ function Login() {
         userState
       );
       response.data&& setUserState({ ...userState, logged: true });
-      response.data&& navigate("/");
+      
+      setUserState((prevUserState) => {
+        if (prevUserState.logged) {
+          navigate("/");
+        }
+        return prevUserState;
+      });
     } catch (error) {
       console.log("Eroare la autentificare:", error);
     }
@@ -128,6 +134,7 @@ function Login() {
         )}
         
         {functie !== functiiType.sponsor && error && <span>{error}</span>}
+        <span className={s["have-account"]} onClick={()=>navigate('/register')}>N-am cont</span>
         {functie && (
           <button onClick={() => handleLogin()} className={s.submit}>
             LOGIN

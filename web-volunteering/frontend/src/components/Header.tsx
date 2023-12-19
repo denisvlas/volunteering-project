@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import s from "../styles/Main.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../context";
 
 import { Projects } from "../pages/evenimente/models";
@@ -8,9 +8,10 @@ import { functiiTypeBD } from "../pages/Registration/models";
 
 function Header() {
   const{userInfo,setUserInfo,setUserState,userState}=useContext(Context)
-
+  const navigate=useNavigate()
   function logOut(){
     localStorage.setItem('userInfo', JSON.stringify({...userState,logged:false}));
+    navigate('/')
     window.location.reload();
   } 
  
@@ -21,11 +22,12 @@ function Header() {
         <Link to={"/"}>Acasa</Link>
       </div>
       {userInfo.logged&&
-        <>
-        {userInfo.functie===functiiTypeBD.voluntari&&<div onClick={()=>logOut()}className={s["v-profile"]}>V</div>}
-        {userInfo.functie===functiiTypeBD.organizatori&&<div  onClick={()=>logOut()}className={s["o-profile"]}>O</div>}
-        {userInfo.functie===functiiTypeBD.sponsori&&<div  onClick={()=>logOut()}className={s["s-profile"]}>S</div>}
-        </>
+        <div className={s.profile}>
+        <i onClick={()=>logOut()} className="bi bi-box-arrow-left"></i>
+        {userInfo.functie===functiiTypeBD.voluntari&&<div onClick={()=>navigate('/profile')}className={s["v-profile"]}>V</div>}
+        {userInfo.functie===functiiTypeBD.organizatori&&<div  onClick={()=>navigate('/profile')}className={s["o-profile"]}>O</div>}
+        {userInfo.functie===functiiTypeBD.sponsori&&<div  onClick={()=>navigate('/profile')}className={s["s-profile"]}>S</div>}
+        </div>
         }
     </header>
   );

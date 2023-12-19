@@ -1,90 +1,73 @@
-
-.eveniment{
-display: flex;
-gap: 10px;
-width: 100%;
-height: 600px;
+.eveniment {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  height: 600px;
 }
 
-.div{
-    display: flex;
-    flex-direction: column;
-    box-shadow: 1px 1px 24px 1px rgba(0,0,0,0.29);
-    -webkit-box-shadow: 1px 1px 24px 1px rgba(0,0,0,0.29);
-    -moz-box-shadow: 1px 1px 24px 1px rgba(0,0,0,0.29);
-    
-  }
+.div {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 1px 1px 24px 1px rgba(0, 0, 0, 0.29);
+  -webkit-box-shadow: 1px 1px 24px 1px rgba(0, 0, 0, 0.29);
+  -moz-box-shadow: 1px 1px 24px 1px rgba(0, 0, 0, 0.29);
+}
 
-.img{
+.img {
   width: 100%;
 }
 
-
-
-
-  
-
-.title{
-    font-size: 35px;
-    letter-spacing: 2px;
-    margin-bottom: 20px;
+.title {
+  font-size: 35px;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
 }
 
-
-.desc{
-    font-size: 25px;
-    
+.desc {
+  font-size: 25px;
 }
 
-.lodaing{
-    height: 50vh;
-    gap: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 50px;
-
+.lodaing {
+  height: 50vh;
+  gap: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 50px;
 }
 
 @keyframes loadingAnimation {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
+  0% {
+    transform: rotate(0deg);
   }
-  
-  .loading-spinner {
-    border: 10px solid #8a8787;
-    border-top: 10px solid #3498db;
-    border-radius: 50%;
-    width: 70px;
-    height: 70px;
-    animation: loadingAnimation 1s linear infinite;
+  100% {
+    transform: rotate(360deg);
   }
-  
-
- 
-  .p-info{
-    text-align: start;
-    position: relative;
-    font-size: 20px;
-    padding: 25px;
-    display: flex;
-    height: 100%;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: space-between;
 }
 
+.loading-spinner {
+  border: 10px solid #8a8787;
+  border-top: 10px solid #3498db;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  animation: loadingAnimation 1s linear infinite;
+}
 
+.p-info {
+  text-align: start;
+  position: relative;
+  font-size: 20px;
+  padding: 25px;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
 
-
-
-
-.table-container{
+.table-container {
   background: #fafafa;
   width: 100%;
   height: 100%;
@@ -92,28 +75,27 @@ height: 600px;
   margin: 0 auto;
 }
 
-.section{
+.section {
   position: relative;
   display: flex;
   flex-direction: column;
   flex: 2;
-  box-shadow: 1px 1px 24px 1px rgba(0,0,0,0.29);
-    -webkit-box-shadow: 1px 1px 24px 1px rgba(0,0,0,0.29);
-    -moz-box-shadow: 1px 1px 24px 1px rgba(0,0,0,0.29);
-
+  box-shadow: 1px 1px 24px 1px rgba(0, 0, 0, 0.29);
+  -webkit-box-shadow: 1px 1px 24px 1px rgba(0, 0, 0, 0.29);
+  -moz-box-shadow: 1px 1px 24px 1px rgba(0, 0, 0, 0.29);
 }
 
-.descriere-section{
+.descriere-section {
   width: 100%;
   height: 50%;
-
+  font-size: 20px;
 }
-.informatii-section{
+.informatii-section {
   width: 100%;
   height: 50%;
 }
 
-.header{
+.header {
   padding: 0 20px;
   font-size: 26px;
   display: flex;
@@ -122,12 +104,11 @@ height: 600px;
   width: 100%;
   background: #f2f2f2;
   height: 50px;
-  
-} 
-i{
+}
+i {
   font-size: 26px;
 }
-.descriere{
+.descriere {
   padding: 20px;
   max-height: 84%;
   overflow: auto;
@@ -137,7 +118,7 @@ i{
   font-size: 20px;
 }
 
-.informatii{
+.informatii {
   padding: 20px;
   max-height: 84%;
   overflow: auto;
@@ -149,22 +130,61 @@ i{
   justify-content: space-between;
 }
 
-.col1{
+.col1 {
   display: flex;
-   flex-direction: column;
-   flex:1;
-   gap: 15px;
-   height: 100%;
-  }
-.col2{
+  flex-direction: column;
+  gap: 15px;
+  height: 100%;
+}
+.col2 {
   display: flex;
-   flex-direction: column;
-   flex:1;
-   gap: 15px;
-   height: 100%;
+  flex-direction: column;
+  width: 50%;
+  gap: 15px;
+  height: 100%;
 }
 
-.pop-info-menu{
+.edit{
+  gap: 10px;
+  width: 200%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.edit-loc{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.edit-loc div {
+  display: flex;
+  flex-direction: column;
+  width: 33.3%;
+}
+.flex{
+  display: flex;
+  flex-direction: column;
+}
+.col2 input,select{
+  border:1px solid #dedede;
+  font-size: 20px;
+  
+
+}
+
+.categorii{
+  height: 30px;
+  font-size: 20px;
+}
+
+
+.loc-labels{
+  font-size: 17px;
+}
+
+.pop-info-menu {
   display: flex;
   flex-direction: column;
   background: rgb(232, 232, 232);
@@ -173,26 +193,23 @@ i{
   gap: 5px;
   top: 50px;
   right: 0;
-  -webkit-box-shadow: 5px 5px 14px 0px rgba(0,0,0,0.67);
-  -moz-box-shadow: 5px 5px 14px 0px rgba(0,0,0,0.67);
-  box-shadow: 5px 5px 14px 0px rgba(0,0,0,0.67);
+  -webkit-box-shadow: 5px 5px 14px 0px rgba(0, 0, 0, 0.67);
+  -moz-box-shadow: 5px 5px 14px 0px rgba(0, 0, 0, 0.67);
+  box-shadow: 5px 5px 14px 0px rgba(0, 0, 0, 0.67);
   z-index: 100;
-  
 }
 
-.pop-info-menu span{
-  border-bottom:1px solid grey;
+.pop-info-menu span {
+  border-bottom: 1px solid grey;
   padding: 10px;
   transition: all 0.3s;
   width: 100%;
 }
 
-.pop-info-menu span:hover{
+.pop-info-menu span:hover {
   background: rgb(255, 255, 255);
   cursor: pointer;
-  
 }
-
 
 .my-table {
   border-collapse: collapse;
@@ -201,8 +218,7 @@ i{
   margin: 0 auto;
 }
 
-
- .my-table td {
+.my-table td {
   font-size: 25px;
   height: 70px;
   border: 1px solid #ddd;
@@ -212,7 +228,7 @@ i{
   padding-left: 20px;
 }
 
-.transactions .my-table td{
+.transactions .my-table td {
   padding: 0 50px;
   text-align: center;
   height: 40px;
@@ -225,11 +241,8 @@ i{
   font-size: 25px;
 }
 
-
-
-.transactions .my-table{
+.transactions .my-table {
   overflow: auto;
-
 }
 /* Stiluri pentru rândurile alternative */
 .my-table tr:nth-child(even) {
@@ -240,58 +253,51 @@ i{
   background-color: #fff;
 }
 
-.bi .bi-list{
+.bi .bi-list {
   position: absolute;
-
 }
 
-
-
-.cantitate-span{
+.cantitate-span {
   margin-left: 6%;
 }
 
-.chart{
+.chart {
   position: relative;
   top: 50px;
   margin: 0 auto;
   margin-bottom: 80px;
-
 }
 
-.history-icon{
+.history-icon {
   font-size: 35px;
   /* position: relative;
   left: calc(100% - 60px);
   top:90px; */
 }
 
-.transactions{
-
+.transactions {
   height: 290px;
   width: 95%;
   margin: 0 auto;
   overflow: auto;
 }
 
-.section-st{
+.section-st {
   position: relative;
   display: flex;
   flex-direction: column;
   flex: 2;
   height: 920px;
-  box-shadow: 1px 1px 24px 1px rgba(0,0,0,0.29);
-    -webkit-box-shadow: 1px 1px 24px 1px rgba(0,0,0,0.29);
-    -moz-box-shadow: 1px 1px 24px 1px rgba(0,0,0,0.29);
+  box-shadow: 1px 1px 24px 1px rgba(0, 0, 0, 0.29);
+  -webkit-box-shadow: 1px 1px 24px 1px rgba(0, 0, 0, 0.29);
+  -moz-box-shadow: 1px 1px 24px 1px rgba(0, 0, 0, 0.29);
 }
 
-
-.suma{
+.suma {
   color: #49ca35;
 }
 
-
-.transactions-btn-div{
+.transactions-btn-div {
   display: flex;
   margin: 0 25px;
   margin-bottom: 30px;
@@ -300,10 +306,109 @@ i{
   height: 40px;
 }
 
-.sponsorizeaza{
+.sponsorizeaza,.ajuta {
   height: 40px;
   padding: 8px;
   font-size: 20px;
   border: none;
   background: #25de3e;
+}
+
+
+.sponsorizeaza-container{
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top:0;
+  right: 0;
+  width: 100%;
+  background: #0000006d;
+}
+.sponsorizeaza-form{
+  font-size: 30px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px;
+  align-items: center;
+  gap: 20px;
+  width: 90%;
+  width: 600px;
+  height: 300px;
+  background: rgb(255, 255, 255);
+  box-shadow: 1px 1px 24px 1px rgba(0,0,0,0.29);
+-webkit-box-shadow: 1px 1px 24px 1px rgba(0,0,0,0.29);
+-moz-box-shadow: 1px 1px 24px 1px rgba(0,0,0,0.29);
+}
+
+.sponsorizeaza-form input{
+  width: 60%;
+  padding: 0 15px;
+  height: 50px;
+  font-size: 30px;
+  box-shadow: 3px 1px 5px 2px rgba(0,0,0,0.29) inset;
+  -webkit-box-shadow: 3px 1px 5px 2px rgba(0,0,0,0.29) inset;
+  -moz-box-shadow: 3px 1px 5px 2px rgba(0,0,0,0.29) inset;
+}
+
+.sponsor-input{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.ajuta{
+  width: 200px;
+}
+
+.close-x{
+  position: absolute;
+  top: 5px;
+  height: 30px;
+  border-radius: 50%;
+  right: 5px;
+  font-size: 30px;
+
+}
+
+
+/* Adaugă aceste stiluri în fișierul CSS al aplicației tale */
+.save-btn-container {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.save-btn {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #4caf50; /* culoarea de fundal a butonului */
+  color: #fff; /* culoarea textului butonului */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* adaugă o tranziție la schimbarea culorii de fundal */
+}
+
+.save-btn:hover {
+  background-color: #45a049; /* culoarea de fundal a butonului la hover */
+}
+
+.date{
+  width: 100%;
+}
+
+
+.textarea {
+  width: 100%;
+  height: 100%;
+  resize: none; /* dezactivează opțiunea de redimensionare */
+  box-sizing: border-box; /* asigură că lățimea și înălțimea includ și padding-ul și border-ul */
+  font-size: 16px; /* mărimea fontului */
+  padding: 8px; /* adaugă un spațiu de padding pentru a îmbunătăți aspectul */
+  border: 1px solid #ccc; /* adaugă un chenar pentru a delimita zona de editare */
 }

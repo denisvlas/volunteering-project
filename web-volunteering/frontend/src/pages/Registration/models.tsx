@@ -23,5 +23,16 @@ export interface User{
     logged:boolean;
 }
 
+export interface ProfileInfo{
+    id:number;
+    nume:string,
+    prenume:string,
+    telefon:string
+    likeuri:number
+    email:string
+    numar_proiecte:number
+    suma_donata:number
+}
+
 export type functiiDB=functiiTypeBD.organizatori|functiiTypeBD.sponsori|functiiTypeBD.voluntari;
 export type functii=functiiType.organizator|functiiType.sponsor|functiiType.voluntar;

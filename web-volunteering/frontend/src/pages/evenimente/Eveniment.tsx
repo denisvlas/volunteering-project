@@ -12,6 +12,7 @@ import Necesitati from "../../components/NecesitatiSection";
 import NecesitatiSection from "../../components/NecesitatiSection";
 import StatisticaSection from "../../components/StatisticaSection";
 import HistoryTransactions from "../../components/HistoryTransactions";
+import { Context } from "../../context";
 
 function Eveniment() {
   const { id } = useParams();
@@ -30,6 +31,22 @@ function Eveniment() {
 
   useEffect(() => {
     getProjects();
+  }, []);
+
+  const{userState,setUserInfo}=useContext(Context)
+  useEffect(() => {
+    userState.logged&&
+    localStorage.setItem('userInfo', JSON.stringify(userState));
+  }, []);
+
+  useEffect(() => {
+    // Recuperare date din localStorage la încărcarea componentei
+    const storedUserInfoString = localStorage.getItem('userInfo');
+
+    if (storedUserInfoString !== null) {
+      const storedUserInfo = JSON.parse(storedUserInfoString);
+      setUserInfo(storedUserInfo);
+    }
   }, []);
 
   const [showMenu,setShowMenu]=useState(false)
@@ -64,9 +81,9 @@ function Eveniment() {
                 <hr />
               </div>
           </div>
-          {/* {section===menu.InformatiiGenerale&&<InfoSection/>}
-          {section===menu.Necesitati&&<NecesitatiSection />} */}
-          {1&&<StatisticaSection />}
+          {section===menu.InformatiiGenerale&&<InfoSection/>}
+          {section===menu.Necesitati&&<NecesitatiSection />}
+          {section===menu.Finantari&&<StatisticaSection />}
         </div>
       )}
     </div>
