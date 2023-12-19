@@ -167,7 +167,7 @@ i {
   display: flex;
   flex-direction: column;
 }
-.col2 input,select{
+.col2 input,select,.p-info input{
   border:1px solid #dedede;
   font-size: 20px;
   
@@ -412,3 +412,4 @@ i {
   padding: 8px; /* adaugă un spațiu de padding pentru a îmbunătăți aspectul */
   border: 1px solid #ccc; /* adaugă un chenar pentru a delimita zona de editare */
 }
+

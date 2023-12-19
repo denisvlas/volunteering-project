@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { SectionContext } from "../pages/evenimente/context";
+import { EvenimentContext } from "../pages/evenimente/context";
 import PopInfoMenu from "./PopInfoMenu";
 import c from "../pages/evenimente/Eveniment.module.css";
 import axios from "axios";
@@ -8,7 +8,7 @@ import { Necesitati } from "../pages/evenimente/models";
 import { project } from "../styles/ProjecstList.module.css";
 
 function NecesitatiSection() {
-  const { id,p, setShowMenu, showMenu, section } = useContext(SectionContext);
+  const { id,p, setShowMenu, showMenu, section } = useContext(EvenimentContext);
   const [necesitati, setNecesitati] = useState<Necesitati[]>([]);
   const [loading,setLoading]=useState(true)
 

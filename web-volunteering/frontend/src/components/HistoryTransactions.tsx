@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import c from "../pages/evenimente/Eveniment.module.css";
-import { SectionContext } from '../pages/evenimente/context';
+import {  EvenimentContext } from '../pages/evenimente/context';
 import { Transactions } from '../pages/evenimente/models';
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 
 function HistoryTransactions({ transactions }: Props): JSX.Element {
-  const { showTr } = useContext(SectionContext);
+  const { showTr } = useContext(EvenimentContext);
 
   return (
     <div>

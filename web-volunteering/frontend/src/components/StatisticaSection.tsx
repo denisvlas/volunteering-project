@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { SectionContext } from '../pages/evenimente/context';
+import { EvenimentContext } from '../pages/evenimente/context';
 import PopInfoMenu from './PopInfoMenu';
 import c, { div } from '../pages/evenimente/Eveniment.module.css'
 import axios from 'axios';
@@ -16,7 +16,7 @@ function StatisticaSection() {
     data:string
     suma:string
   }
-  const { setShowTr,showTr,id,p,setShowMenu,showMenu,section } = useContext(SectionContext);
+  const { setShowTr,showTr,id,p,setShowMenu,showMenu,section } = useContext(EvenimentContext);
   const{userState,setUserInfo}=useContext(Context)
   const [data,setData]=useState<Data[]>([])
   const [loading,setLoading]=useState(true)

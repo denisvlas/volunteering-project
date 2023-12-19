@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import s from '../pages/evenimente/Eveniment.module.css'
 import { menuType,menu } from '../pages/evenimente/models'
-import { SectionContext } from '../pages/evenimente/context';
+import { EvenimentContext } from '../pages/evenimente/context';
 
 
 function PopInfoMenu() {
-    const { section, setSection,showMenu,setShowMenu } = useContext(SectionContext);
+    const { section, setSection,showMenu,setShowMenu } = useContext(EvenimentContext);
     const meniu = [menu.InformatiiGenerale, menu.Necesitati, menu.Finantari];
 
     return (

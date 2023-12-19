@@ -6,7 +6,6 @@ import { app } from "../../styles/App.module.css";
 import { container } from "../../styles/Main.module.css";
 import EventList from "../../components/EventList";
 import axios from "axios";
-import { SectionContext } from "./context";
 
 function Evenimente() {
   const{projects,setProjects,userState,setUserInfo}=useContext(Context)

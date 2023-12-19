@@ -33,3 +33,16 @@ export interface Transactions{
     suma:string
 
 }
+
+export interface IeditedValues {
+    inceput:  Date;
+    sfarsit: Date;
+    strada: undefined|string;
+    oras: undefined|string;
+    tara: undefined|string;
+    categorie: undefined|string;
+    descriere: undefined|string;
+    status: undefined|string;
+    nume: undefined|string;
+}
+
